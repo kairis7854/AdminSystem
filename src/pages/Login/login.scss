@@ -1,0 +1,79 @@
+.login {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(0deg, #103d58 0%, #071a3a 30%, #010d16 100%);
+
+  .loginCard {
+    display: flex;
+    flex-direction: column;
+    width: 400px;
+    padding: 40px;
+    background: #296cff0d;
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    border-radius: 8px;
+    box-shadow: 2px 2px 20px rgb(9, 64, 95);
+    color: white;
+    white-space: nowrap;
+
+    .loginCard__title {
+      text-align: center;
+      margin-bottom: 120px;
+    }
+
+    .loginCard__user {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 10px;
+
+
+      .loginCard__userInput {
+        width: 100%;
+        margin-left: 5px;
+        border-radius: 4px;
+        padding-left: 8px;
+
+        &:hover,
+        &:focus {
+          border-color: #ffffff;
+          box-shadow: 0 0 4px rgb(255, 255, 255);
+        }
+      }
+    }
+
+    .loginCard__password {
+      display: flex;
+      margin-bottom: 20px;
+
+      .loginCard__passwordInput {
+        width: 100%;
+        margin-left: 5px;
+        border-radius: 4px;
+        padding-left: 8px;
+
+        &:hover,
+        &:focus {
+          border-color: #ffffff;
+          box-shadow: 0 0 4px rgb(255, 255, 255);
+        }
+      }
+    }
+
+    .loginCard__button {
+      padding: 10px;
+      // color: black;
+      color: white;
+      border-radius: 4px;
+      background: rgb(79, 62, 202);
+      z-index: 100;
+
+      &:hover {
+        filter: brightness(1.2);
+        cursor: pointer;
+      }
+    }
+  }
+}

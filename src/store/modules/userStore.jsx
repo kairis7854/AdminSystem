@@ -14,6 +14,7 @@ export const loginUser = createAsyncThunk(
         token,
         // uid: user.uid,
         email: user.email,
+        isAuthenticated: true,
       };
     } catch (error) {
       return rejectWithValue(error.message);
@@ -25,14 +26,16 @@ const userStore = createSlice({
   name: 'user',
   initialState: {
     user: null,
-    token: localStorage.getItem('token') || null, 
+    token: localStorage.getItem('token') || null,
     loading: false,
     error: null,
+    isAuthenticated: !!localStorage.getItem('token'),
   },
   reducers: {
     logout: (state) => {
       state.user = null;
       state.token = null;
+      state.isAuthenticated = false;
       localStorage.removeItem('token');
     },
   },
@@ -46,6 +49,7 @@ const userStore = createSlice({
         state.loading = false;
         state.token = action.payload.token;
         state.user = action.payload;
+        state.isAuthenticated = true;
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.loading = false;

@@ -5,8 +5,10 @@ import { auth } from '../../../firebase.js';
 export const loginUser = createAsyncThunk(
   'auth/loginUser',
   async ({ email, password }, { rejectWithValue }) => {
+    //firebase 接收 email當作帳號，故轉成email送出
+    const firebaseEmail = `${email}@AdminSystem.com`
     try {
-      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      const userCredential = await signInWithEmailAndPassword(auth, firebaseEmail, password);
       const user = userCredential.user;
       const token = await user.getIdToken();
       localStorage.setItem('token', token);

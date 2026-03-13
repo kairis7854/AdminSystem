@@ -39,14 +39,14 @@
         &:hover,
         &:focus {
           border-color: #ffffff;
-          box-shadow: 0 0 4px rgb(255, 255, 255);
+          box-shadow: 0 0 8px rgb(255, 255, 255);
         }
       }
     }
 
     .loginCard__password {
       display: flex;
-      margin-bottom: 20px;
+      margin-bottom: 5px;
 
       .loginCard__passwordInput {
         width: 100%;
@@ -57,18 +57,25 @@
         &:hover,
         &:focus {
           border-color: #ffffff;
-          box-shadow: 0 0 4px rgb(255, 255, 255);
+          box-shadow: 0 0 8px rgb(255, 255, 255);
         }
       }
     }
 
+    .loginCard__err {
+      margin-bottom: 5px;
+      height: 15px;
+      color: red;
+      font-size: 13px;
+      font-weight: 500;
+    }
+
     .loginCard__button {
       padding: 10px;
-      // color: black;
       color: white;
       border-radius: 4px;
       background: rgb(79, 62, 202);
-      z-index: 100;
+
 
       &:hover {
         filter: brightness(1.2);

@@ -1,0 +1,30 @@
+.dashboard {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 20px;
+
+  .dashboardCard__layout {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+
+     justify-content: flex-start;
+  }
+
+  .dashboardMain__layout {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    background-color: #f8fafc;
+    padding: 20px;
+    border: 2px dashed #dadada;
+    border-radius: 10px;
+    color: #94a3b8;
+    font-size: 1.25rem;
+    font-weight: 500;
+    letter-spacing: 1px;
+
+  }
+}

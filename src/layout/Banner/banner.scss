@@ -1,0 +1,28 @@
+.banner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 64px;
+    border: 1px solid #dadada;
+    border-radius: 10px;
+    padding: 0 20px;
+    background-color: white;
+
+    .bannerUser {
+        font-size: 20px;
+        font-weight: 700;
+    }
+
+    .bannerRight {
+        display: flex;
+
+        .bannerRight__time {
+            padding-right: 16px;
+        }
+
+        .bannerRight__logout {
+            width: 24px;
+            height: 24px;
+        }
+    }
+}

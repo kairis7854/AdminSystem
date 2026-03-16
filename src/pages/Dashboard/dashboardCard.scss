@@ -1,0 +1,54 @@
+ .dashboardCard {
+     display: flex;
+     flex-direction: column;
+     flex: 1 1 240px;
+     max-width: 350px;
+     min-height: 140px;
+     border: 1px solid rgb(225, 227, 226);
+     border-radius: 10px;
+     padding: 20px;
+     background-color: white;
+     transition: all 0.3s ease;
+
+     &:hover {
+         transform: translateY(-5px);
+         box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
+         border-color: rgba(25, 127, 230, .3);
+     }
+
+     .dashboardCard__Top {
+         display: flex;
+         justify-content: space-between;
+         align-items: center;
+         margin-bottom: 24px;
+
+         .dashboardCard__img {
+             width: 24px;
+             height: 24px;
+             background-color: #bfa;
+         }
+
+         .dashboardCard__badge {
+             display: flex;
+             align-items: center;
+             background-color: #fff;
+             font-size: 13px;
+             font-weight: 600;
+             padding: 4px 10px;
+             border-radius: 5px;
+         }
+     }
+
+     .dashboardCard__main {
+         .dashboardCard__title {
+             font-size: 14px;
+             color: #64748b;
+         }
+
+         .dashboardCard__value {
+             color: #0f172a;
+             font-size: 20px;
+             font-weight: 700;
+         }
+     }
+ }

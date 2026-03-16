@@ -1,0 +1,81 @@
+.nav {
+    box-sizing: border-box;
+    height: calc(100vh - 40px);
+    min-width: 256px;
+    border: 1px solid #dadada;
+    border-radius: 10px;
+    padding: 20px 20px;
+    background-color: white;
+
+    .navTop {
+        display: flex;
+        height: 40px;
+        margin-bottom: 20px;
+
+        .navTop__logo {
+            width: 40px;
+            height: 40px;
+            margin-right: 10px;
+        }
+
+        .navTop__info {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+
+            .navTop__title {
+                font-weight: 600;
+                line-height: 1.2;
+            }
+
+            .navTop__subtitle {
+                font-size: 12px;
+                color: #6b7280;
+            }
+        }
+    }
+
+    .navContent {
+        width: 100%;
+
+        .navContent__list {
+            display: flex;
+            flex-direction: column;
+
+            .navContent__item,
+            .navContent__subItem {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                padding: 10px 15px;
+                cursor: pointer;
+
+                &:hover {
+                    color: #197fe6;
+                    background-color: #e8f2fc;
+                }
+            }
+
+            .navContent__itemIcon {
+                width: 20px;
+                height: 20px;
+            }
+
+            .navContent__itemGroup {
+                display: flex;
+                flex-direction: column;
+
+                .navContent__subList {
+                    height: 0;
+                    padding: 0;
+                    overflow: hidden;
+                    transition: .2s ease-in-out;
+
+                    .navContent__subItem {
+                        padding-left: 45px;
+                    }
+                }
+            }
+        }
+    }
+}

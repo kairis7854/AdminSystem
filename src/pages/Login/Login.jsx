@@ -32,10 +32,10 @@ export default function Login() {
       <form className="loginCard">
         <h2 className="loginCard__title">後臺管理系統</h2>
 
-        <label className="loginCard__user">
+        <label className="loginCard__label">
           <span >帳號</span>
           <input
-            className="loginCard__userInput"
+            className="loginCard__input"
             type="text"
             name="user"
             required
@@ -44,10 +44,10 @@ export default function Login() {
           />
         </label>
 
-        <label className="loginCard__password">
+        <label className="loginCard__label">
           <span >密碼</span>
           <input
-            className='loginCard__passwordInput'
+            className='loginCard__input'
             type="password"
             name="passwordInput"
             required

@@ -24,46 +24,30 @@
       margin-bottom: 120px;
     }
 
-    .loginCard__user {
+    .loginCard__label {
       display: flex;
-      justify-content: center;
       margin-bottom: 10px;
 
-
-      .loginCard__userInput {
+      .loginCard__input {
         width: 100%;
         margin-left: 5px;
         border-radius: 4px;
-        padding-left: 8px;
+        padding-left:  8px ;
+        background-color: white;
+        color:black;
+        font-size: 14px;
 
         &:hover,
         &:focus {
-          border-color: #ffffff;
-          box-shadow: 0 0 8px rgb(255, 255, 255);
-        }
-      }
-    }
-
-    .loginCard__password {
-      display: flex;
-      margin-bottom: 5px;
-
-      .loginCard__passwordInput {
-        width: 100%;
-        margin-left: 5px;
-        border-radius: 4px;
-        padding-left: 8px;
-
-        &:hover,
-        &:focus {
-          border-color: #ffffff;
+          caret-color: black;
+          outline: none;
           box-shadow: 0 0 8px rgb(255, 255, 255);
         }
       }
     }
 
     .loginCard__err {
-      margin-bottom: 5px;
+      margin-bottom: 10px;
       height: 15px;
       color: red;
       font-size: 13px;
@@ -75,7 +59,6 @@
       color: white;
       border-radius: 4px;
       background: rgb(79, 62, 202);
-
 
       &:hover {
         filter: brightness(1.2);

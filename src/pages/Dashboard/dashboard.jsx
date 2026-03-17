@@ -11,21 +11,7 @@ export default function Dashboard() {
 
   return (
     <div className='dashboard'>
-      <div className='dashboardCard__layout'>
-        {dashboardCard_menu.map((item, index) => {
-          return (
-            <DashboardCard
-              key={item.title}
-              title={item.title}
-              value={item.value}
-              trend={item.trend}
-              iconSrc={item.iconSrc}
-            />)
-        })}
-      </div>
-      <div className='dashboardMain__layout'>
-        請選擇管理項目
-      </div>
+      歡迎使用後臺管理系統
     </div>
 
   )

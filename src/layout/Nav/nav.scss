@@ -1,42 +1,23 @@
 .nav {
     box-sizing: border-box;
-    height: calc(100vh - 40px);
+    height: 100vh;
     min-width: 256px;
-    border: 1px solid #dadada;
-    border-radius: 10px;
-    padding: 20px 20px;
-    background-color: white;
+    // padding: 20px 20px;
+    background-color: #001529;
+    color: white;
 
     .navTop {
-        display: flex;
-        height: 40px;
-        margin-bottom: 20px;
+        height: 100px;
+        text-align: center;
+        line-height: 100px;
+        font-size: 20px;
 
-        .navTop__logo {
-            width: 40px;
-            height: 40px;
-            margin-right: 10px;
-        }
 
-        .navTop__info {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-
-            .navTop__title {
-                font-weight: 600;
-                line-height: 1.2;
-            }
-
-            .navTop__subtitle {
-                font-size: 12px;
-                color: #6b7280;
-            }
-        }
     }
 
     .navContent {
         width: 100%;
+        color: #8f949e;
 
         .navContent__list {
             display: flex;
@@ -51,14 +32,14 @@
                 cursor: pointer;
 
                 &:hover {
-                    color: #197fe6;
-                    background-color: #e8f2fc;
+                    color: white;
+                    background-color: #1da57a;
                 }
             }
 
             .navContent__itemIcon {
-                width: 20px;
-                height: 20px;
+                // width: 20px;
+                // height: 20px;
             }
 
             .navContent__itemGroup {

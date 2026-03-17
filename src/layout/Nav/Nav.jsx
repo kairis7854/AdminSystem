@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { Home, Package, Users, Smartphone, Monitor, ChevronDown } from 'lucide-react';
 import './nav.scss'
 import shop from '../../assets/shop.png'
 
@@ -8,36 +9,43 @@ export default function Nav() {
 
   return (
     <div className='nav'>
-      <div className="navTop">
-        <img className="navTop__logo" src={shop} alt="" />
-        <div className="navTop__info">
-          <h2 className="navTop__title">後臺管理系統</h2>
-          <span className="navTop__subtitle">整合管理</span>
-        </div>
-      </div>
+      <div className="navTop">後臺管理系統</div>
       <div className="navContent">
         <ul className="navContent__list">
           <li className="navContent__item">
-            <img className="navContent__itemIcon" src={shop} alt="" />
-            <span>控制台</span>
+            <Home className="navContent__itemIcon" />
+            <span>首頁</span>
           </li>
 
           <li className="navContent__itemGroup">
             <div className="navContent__item" onClick={() => { setProductShow(!productShow) }}>
-              <img className="navContent__itemIcon" src={shop} alt="" />
-              <span>商品管理</span>
+              <Package className="navContent__itemIcon" />
+              <span>商品</span>
+              <ChevronDown
+                size={16}
+                style={{
+                  marginLeft: 'auto',
+                  transition: 'transform 0.3s',
+                  transform: productShow ? 'scaleY(-1)' : 'scaleY(1)' 
+                }}
+              />
             </div>
             <ul
               className='navContent__subList'
               style={{ height: productShow ? `${2 * 41}px` : '0px' }}
             >
-              <li className="navContent__subItem">智慧型手機</li>
-              <li className="navContent__subItem">筆記型電腦</li>
+              <li className="navContent__subItem">
+                <Smartphone size={16} style={{ marginRight: '8px' }} />
+                手機
+              </li>
+              <li className="navContent__subItem">
+                <Monitor size={16} style={{ marginRight: '8px' }} />
+                電腦</li>
             </ul>
           </li>
 
           <li className="navContent__item">
-            <img className="navContent__itemIcon" src={shop} alt="" />
+            <Users className="navContent__itemIcon" />
             <span>用戶管理</span>
           </li>
         </ul>

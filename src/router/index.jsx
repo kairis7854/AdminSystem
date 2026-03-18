@@ -17,7 +17,11 @@ const router = createBrowserRouter([
             children: [
               {
                 path: "dashboard",
-                lazy: () => import("../pages/Dashboard/dashboard.jsx")
+                lazy: () => import("../pages/Dashboard/Dashboard.jsx")
+              },
+              {
+                path: "product/mobile",
+                lazy: () => import("../pages/Product/Mobile/Mobile.jsx")
               }
             ]
           }

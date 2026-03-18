@@ -1,18 +1,19 @@
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { Home, Package, Users, Smartphone, Monitor, ChevronDown } from 'lucide-react';
 import './nav.scss'
 import shop from '../../assets/shop.png'
 
 export default function Nav() {
   const [productShow, setProductShow] = useState(true)
-
+  const navigate = useNavigate()
 
   return (
     <div className='nav'>
       <div className="navTop">後臺管理系統</div>
       <div className="navContent">
         <ul className="navContent__list">
-          <li className="navContent__item">
+          <li className="navContent__item" onClick={()=>{navigate('/dashboard')}}>
             <Home className="navContent__itemIcon" />
             <span>首頁</span>
           </li>
@@ -26,7 +27,7 @@ export default function Nav() {
                 style={{
                   marginLeft: 'auto',
                   transition: 'transform 0.3s',
-                  transform: productShow ? 'scaleY(-1)' : 'scaleY(1)' 
+                  transform: productShow ? 'scaleY(-1)' : 'scaleY(1)'
                 }}
               />
             </div>
@@ -34,7 +35,7 @@ export default function Nav() {
               className='navContent__subList'
               style={{ height: productShow ? `${2 * 41}px` : '0px' }}
             >
-              <li className="navContent__subItem">
+              <li className="navContent__subItem" onClick={(()=>{navigate('product/mobile')})}>
                 <Smartphone size={16} style={{ marginRight: '8px' }} />
                 手機
               </li>

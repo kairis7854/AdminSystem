@@ -1,0 +1,51 @@
+const mobileProducts = [
+    {
+        id: "M001",
+        brand: "Apple",
+        model: "iPhone 15 Pro",
+        spec: "256GB / 原色鈦金屬",
+        price: "40,400",
+        onSell: true,
+    },
+    {
+        id: "M002",
+        brand: "Samsung",
+        model: "Galaxy S24 Ultra",
+        spec: "512GB / 鈦灰",
+        price: "43,900",
+        onSell: true,
+    },
+    {
+        id: "M003",
+        brand: "Google",
+        model: "Pixel 8 Pro",
+        spec: "128GB / 海灣藍",
+        price: "33,900",
+        onSell: true,
+    },
+    {
+        id: "M004",
+        brand: "Apple",
+        model: "iPhone 15 Pro",
+        spec: "256GB / 原色鈦金屬",
+        price: "40,400",
+        onSell: true,
+    },
+    {
+        id: "M005",
+        brand: "Samsung",
+        model: "Galaxy S24 Ultra",
+        spec: "512GB / 鈦灰",
+        price: "43,900",
+        onSell: false,
+    },
+    {
+        id: "M006",
+        brand: "Google",
+        model: "Pixel 8 Pro",
+        spec: "128GB / 海灣藍",
+        price: "33,900",
+        onSell: false,
+    },
+];
+export default mobileProducts

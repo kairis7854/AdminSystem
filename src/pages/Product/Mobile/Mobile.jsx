@@ -1,22 +1,32 @@
 import { useState } from 'react'
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { SquarePlus, ChevronLeftIcon, ChevronRightIcon } from 'lucide-react';
-import { Pagination, PaginationContent, PaginationItem, PaginationLink } from '@/components/ui/pagination'
+import { SquarePlus } from 'lucide-react';
 import { useSelector, useDispatch } from 'react-redux'
 import { updateMobile, deleteMobile } from '../../../store/modules/productStore.jsx'
 import { toast } from "sonner"
 import MobileDialog from './MobileDialog.jsx'
+import MobileTable from './MobileTable.jsx'
+import AppPagination from '../../../components/common/AppPagination.jsx'
 import './mobile.scss'
+
 
 export async function loader({ request, params }) {
     return null
 }
 
 export default function Mobile() {
-    const [isOpen, setIsOpen] = useState(false)
-    const [mobileData, setMobileData] = useState({ type: null, data: {} })
+    const [isOpen, setIsOpen] = useState(false)  //彈窗開關
+    const [mobileData, setMobileData] = useState({ type: null, data: {} })  //表單資料
     const { mobiles } = useSelector((state) => state.product);
     const dispatch = useDispatch()
+
+    // 分頁邏輯開始
+    const [currentPage, setCurrentPage] = useState(1); //當前頁數
+    const itemsPerPage = 6; //每頁顯示筆數
+    const totalPages = Math.ceil(mobiles.length / itemsPerPage);
+    const indexOfLastItem = currentPage * itemsPerPage; // 目前最後一筆 
+    const indexOfFirstItem = indexOfLastItem - itemsPerPage; // 目前第一筆
+    const currentItems = mobiles.slice(indexOfFirstItem, indexOfLastItem);
+    // 分頁邏輯結束
 
     const changeSell = (item) => {
         const newStatus = item.onSell ? false : true;
@@ -29,6 +39,10 @@ export default function Mobile() {
         if (isConfirmed) {
             dispatch(deleteMobile(id));
             toast.success('刪除成功');
+
+            if (currentItems.length === 1 && currentPage > 1) {
+                setCurrentPage(currentPage - 1)
+            }
         }
     }
 
@@ -42,86 +56,16 @@ export default function Mobile() {
 
             {/* 列表 */}
             <div className='mb-[20px]'>
-                <Table>
-                    <TableHeader>
-                        <TableRow>
-                            <TableHead className="w-[100px]">廠牌</TableHead>
-                            <TableHead>型號</TableHead>
-                            <TableHead>規格</TableHead>
-                            <TableHead>建議售價</TableHead>
-                            <TableHead className="text-center">狀態</TableHead>
-                            <TableHead className="text-center">操作</TableHead>
-                        </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                        {mobiles.map((item) => (
-                            <TableRow key={item.id}>
-                                <TableCell className="font-medium">{item.brand}</TableCell>
-                                <TableCell>{item.model}</TableCell>
-                                <TableCell>{item.spec}</TableCell>
-                                <TableCell>${item.price}</TableCell>
-                                <TableCell>
-                                    {
-                                        item.onSell === true ?
-                                            <div className="flex flex-col items-center gap-1 py-2">
-                                                <div className='bg-[#ff4d4f] text-white px-4 py-2 cursor-pointer' onClick={() => { changeSell(item) }}> 下架  </div>
-                                                <span className='text-green-600 '>在售</span>
-                                            </div>
-                                            : <div className="flex flex-col items-center gap-1 py-2">
-                                                <div className='bg-[#1DA57A] text-white px-4 py-2 cursor-pointer' onClick={() => { changeSell(item) }}> 上架 </div>
-                                                <span className='text-black '>已停售</span>
-                                            </div>
-                                    }
-                                </TableCell>
-                                <TableCell className=" ">
-                                    <div className='flex justify-center items-center text-[#1DA57A] cursor-pointer'>
-                                        <div
-                                            className='mr-5'
-                                            onClick={() => {
-                                                setIsOpen(true);
-                                                setMobileData({ type: 'edit', data: item })
-                                            }}
-                                        >修改</div>
-                                        <div onClick={() => { onDelete(item.id) }}>刪除</div>
-                                    </div>
-                                </TableCell>
-                            </TableRow>
-                        ))}
-                    </TableBody>
-                </Table>
+                <MobileTable data={currentItems} changeSell={changeSell} setIsOpen={setIsOpen} setMobileData={setMobileData} onDelete={onDelete}/>
             </div>
 
             {/* 頁面選擇 */}
             <div className='self-end pr-[20px]'>
-                <Pagination>
-                    <PaginationContent>
-                        <PaginationItem>
-                            <PaginationLink href='#' aria-label='Go to previous page' size='icon'>
-                                <ChevronLeftIcon className='size-4' />
-                            </PaginationLink>
-                        </PaginationItem>
-                        <PaginationItem>
-                            <PaginationLink href='#'>1</PaginationLink>
-                        </PaginationItem>
-                        <PaginationItem>
-                            <PaginationLink href='#' isActive>
-                                2
-                            </PaginationLink>
-                        </PaginationItem>
-                        <PaginationItem>
-                            <PaginationLink href='#'>3</PaginationLink>
-                        </PaginationItem>
-                        <PaginationItem>
-                            <PaginationLink href='#' aria-label='Go to next page' size='icon'>
-                                <ChevronRightIcon className='size-4' />
-                            </PaginationLink>
-                        </PaginationItem>
-                    </PaginationContent>
-                </Pagination>
-
-                {/* 彈窗 */}
-                <MobileDialog isOpen={isOpen} setIsOpen={setIsOpen} mobileData={mobileData} />
+                <AppPagination currentPage={currentPage} setCurrentPage={setCurrentPage} totalPages={totalPages} />
             </div>
+
+            {/* 彈窗 */}
+            <MobileDialog isOpen={isOpen} setIsOpen={setIsOpen} mobileData={mobileData} />
         </div>
     )
 }

@@ -22,7 +22,11 @@ const router = createBrowserRouter([
               {
                 path: "product/mobile",
                 lazy: () => import("../pages/Product/Mobile/Mobile.jsx")
-              }
+              },
+              {
+                path: "product/computer",
+                lazy: () => import("../pages/Product/Computer/Computer.jsx")
+              },
             ]
           }
         ],

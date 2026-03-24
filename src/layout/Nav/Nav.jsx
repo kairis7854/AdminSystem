@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Home, Package, Users, Smartphone, Monitor, ChevronDown } from 'lucide-react';
 import './nav.scss'
-import shop from '../../assets/shop.png'
+
 
 export default function Nav() {
   const [productShow, setProductShow] = useState(true)
@@ -39,7 +39,7 @@ export default function Nav() {
                 <Smartphone size={16} style={{ marginRight: '8px' }} />
                 手機
               </li>
-              <li className="navContent__subItem">
+              <li className="navContent__subItem"  onClick={(()=>{navigate('product/computer')})}>
                 <Monitor size={16} style={{ marginRight: '8px' }} />
                 電腦</li>
             </ul>

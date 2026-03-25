@@ -2,39 +2,52 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, Di
 import { Button } from "@/components/ui/button"
 import { useState, useEffect } from 'react'
 import { useDispatch } from 'react-redux'
-import { addMobile, updateMobile } from '../../../store/modules/productStore.jsx'
+import { addComputer, updateComputer, deleteCompunter } from '../../../store/modules/productStore.jsx'
 import { toast } from "sonner"
 
-export function ComputerDialog({ isOpen, setIsOpen, mobileData }) {
+export function ComputerDialog({ isOpen, setIsOpen, computerData }) {
     const [form, setForm] = useState(
         {
-            id: "",
+            id: '',
+            name: "",
             brand: "",
-            model: "",
-            spec: "",
-            price: "",
-            onSell: true,
+            price: 0,
+            image: ''
         }
     )
     const dispatch = useDispatch()
+
+
     useEffect(() => {
-        if (mobileData?.type === 'edit' && mobileData.data) {
-            setForm(mobileData.data);
-        } else if (mobileData?.type === 'add') {
-            setForm({ brand: "", model: "", spec: "", price: "", onSell: true });
+        if (computerData?.type === 'edit' && computerData.data) {
+            setForm(computerData.data);
+        } else if (computerData?.type === 'add') {
+            setForm({ id: "", name: "", brand: "", price: "", image: "" });
         }
-    }, [mobileData]);
+    }, [computerData]);
 
     const onSave = (e) => {
         e.preventDefault()
-        if (mobileData.type === 'add') {
-            dispatch(addMobile({ ...form, id: crypto.randomUUID() }));
+        if (computerData.type === 'add') {
+            dispatch(addComputer({ ...form, id: crypto.randomUUID() }));
             toast.success('新增成功')
-        } else if (mobileData.type === 'edit') {
-            dispatch(updateMobile(form));
+        } else if (computerData.type === 'edit') {
+            dispatch(updateComputer(form));
             toast.success('修改成功')
         }
         setIsOpen(false);
+    };
+
+    const onDelete = (id) => {
+        const isConfirmed = window.confirm("確定要刪除嗎？");
+        if (isConfirmed) {
+            dispatch(deleteCompunter(id));
+            toast.success('刪除成功');
+            setIsOpen(false);
+            if (currentItems.length === 1 && currentPage > 1) {
+                setCurrentPage(currentPage - 1)
+            }
+        }
     };
 
     const onInputChange = (e) => {
@@ -48,39 +61,56 @@ export function ComputerDialog({ isOpen, setIsOpen, mobileData }) {
     return (
         <Dialog open={isOpen} onOpenChange={setIsOpen}>
             <DialogContent>
+                {/* 標題˙ */}
                 <DialogHeader className="mb-[20px]">
-                    <DialogTitle className="text-[18px]">{mobileData?.type === 'add' ? '新增' : '編輯'}商品</DialogTitle>
+                    <DialogTitle className="text-[18px]">{computerData?.type === 'add' ? '新增' : '編輯'}商品</DialogTitle>
                 </DialogHeader>
                 <DialogDescription className="sr-only">
-                    {mobileData?.type === 'add' ? '新增商品資訊表單' : '編輯商品資訊表單'}
+                    {computerData?.type === 'add' ? '新增商品資訊表單' : '編輯商品資訊表單'}
                 </DialogDescription>
-                <form className="p-[20px]" onSubmit={onSave} autoComplete="off">
-                    <div className="flex justify-center items-center  mb-[20px]">
 
-                        <label className="w-[120px] aspect-square border-2 border-dashed border-[#d9d9d9] rounded-[8px] flex flex-col items-center justify-center cursor-pointer hover:border-[#1DA57A] hover:bg-[#f6ffed] transition-all overflow-hidden group">                            {form.imageFile ? form.imageFile.name : "點擊上傳圖片"}
+                <form className="p-[20px]" onSubmit={onSave} autoComplete="off">
+                    {/* input框 */}
+                    <div className="flex justify-center items-center  mb-[20px]">
+                        <label className="w-[120px] aspect-square border-2 border-dashed border-[#d9d9d9] rounded-[8px] flex flex-col items-center justify-center cursor-not-allowed hover:border-[#1DA57A] hover:bg-[#f6ffed] transition-all overflow-hidden group">
+                            {form.image ? (
+                                <img src={form.image} className="w-full h-full object-cover" alt="preview" />
+                            ) : (
+                                <div className="flex flex-col items-center justify-center">
+                                    <span className="text-[12px] text-gray-400 group-hover:text-[#1DA57A]">點擊上傳</span>
+                                </div>
+                            )}
                             <input
-                                type="file"
-                                className="hidden" 
-                                accept="image/*"
+                                // type="file"
+                                className="hidden"
+                                name='computerImage'
+                            // accept="image/*"
                             />
                         </label>
                     </div>
                     <div className="flex items-center  mb-[10px]">
                         <span className="pr-[5px] whitespace-nowrap">型號</span>
-                        <input className="h-9 w-full rounded-[4px] border border-[#d9d9d9] pl-[5px]" onChange={onInputChange} name="model" value={form.model} id="model" required />
+                        <input className="h-9 w-full rounded-[4px] border border-[#d9d9d9] pl-[5px]" onChange={onInputChange} name="name" value={form.name} id="name" required autoComplete="name" />
                     </div>
                     <div className="flex items-center  mb-[10px]">
                         <span className="pr-[5px] whitespace-nowrap">廠牌</span>
-                        <input className="h-9 w-full rounded-[4px] border border-[#d9d9d9] pl-[5px]" onChange={onInputChange} name="spec" value={form.spec} id="spec" required />
+                        <input className="h-9 w-full rounded-[4px] border border-[#d9d9d9] pl-[5px]" onChange={onInputChange} name="brand" value={form.brand} id="brand" required autoComplete="brand" />
                     </div>
                     <div className="flex items-center  mb-[10px]">
                         <span className="pr-[5px] whitespace-nowrap">價格</span>
-                        <input className="h-9 w-full rounded-[4px] border border-[#d9d9d9] pl-[5px]" onChange={onInputChange} name="price" value={form.price} id="price" required />
+                        <input className="h-9 w-full rounded-[4px] border border-[#d9d9d9] pl-[5px]" onChange={onInputChange} name="price" value={form.price} id="price" required autoComplete="price" />
                     </div>
+
+                    {/* 按鈕 */}
                     <DialogFooter showCloseButton={false}>
                         <DialogClose asChild>
                             <Button variant="cancel" type="button">取消</Button>
                         </DialogClose>
+                        {
+                            computerData?.type === 'add'
+                                ? null
+                                : <Button variant="delete" type="button" onClick={() => { onDelete(form.id) }}>刪除</Button>
+                        }
                         <Button variant="confirm" type="submit">儲存</Button>
                     </DialogFooter>
                 </form>

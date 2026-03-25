@@ -21,6 +21,7 @@ const buttonVariants = cva(
         link: "text-primary underline-offset-4 hover:underline",
         confirm: "  rounded-[3px] bg-[#1DA57A] text-primary-foreground hover:cursor-pointer hover:bg-[#178a66] transition-colors duration-200",
         cancel: "rounded-[3px] border border-transparent bg-transparent text-muted-foreground hover:cursor-pointer hover:border-muted-foreground/20 hover:bg-muted hover:text-foreground transition-all duration-200",
+        delete: "h-9 px-4 rounded-[3px] bg-[#ff4d4f] text-white font-medium shadow-sm hover:bg-[#d9363e] active:bg-[#b9272d] transition-all duration-200 cursor-pointer flex items-center justify-center",
       },
       size: {
         default:

@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
+import { deleteCompunter } from '../../../store/modules/productStore.jsx'
 import { SquarePlus } from 'lucide-react';
+import { toast } from "sonner"
 import AppPagination from '../../../components/common/AppPagination.jsx'
 import ComputerDialog from './ComputerDialog.jsx'
+import ComputerCard from './ComputerCard.jsx'
 import './computer.scss'
-
-
 
 export async function loader({ request, params }) {
     return null
@@ -15,11 +16,12 @@ export default function Computer() {
     const [isOpen, setIsOpen] = useState(false)  //彈窗開關
     const [computerData, setComputerData] = useState({ type: null, data: {} })  //選中的卡片資料
     const { computers } = useSelector((state) => state.product)
+    const dispatch = useDispatch()
 
     // 分頁邏輯開始
     const [currentPage, setCurrentPage] = useState(1); //當前頁數
-    const [itemsPerPage, setItemsPerPage] = useState(10);
-    const [gridCols, setGridCols] = useState('grid-cols-5');
+    const [itemsPerPage, setItemsPerPage] = useState(10); //每頁顯示卡片數，RWD
+    const [gridCols, setGridCols] = useState('grid-cols-5'); //每頁顯示列數(grid)，RWD
 
     useEffect(() => {
         const handleResize = () => {
@@ -50,6 +52,18 @@ export default function Computer() {
     const currentItems = computers.slice(indexOfFirstItem, indexOfLastItem);
     // 分頁邏輯結束
 
+    const onDelete = (id) => {
+        const isConfirmed = window.confirm("確定要刪除嗎？");
+        if (isConfirmed) {
+            dispatch(deleteCompunter(id));
+            toast.success('刪除成功');
+            setIsOpen(false);
+            if (currentItems.length === 1 && currentPage > 1) {
+                setCurrentPage(currentPage - 1)
+            }
+        }
+    };
+
     return (
         <div className='computer flex flex-col flex-1 min-w-0'>
             {/* 新增商品 */}
@@ -60,32 +74,8 @@ export default function Computer() {
 
             {/* 卡片 */}
             <div className={`grid gap-[20px] items-stretch w-full ${gridCols}`} >
-                {
-                    currentItems.map((item) => (
-                        <div
-                            className="flex flex-col flex-start bg-white border border-gray-200 rounded-[5px] overflow-hidden shadow-sm cursor-pointer h-full"
-                            key={item.id}
-                            onClick={() => { setIsOpen(true); setComputerData({ type: 'edit', data: item }) }
-                            }
-                        >
-                            <div className=" h-full w-full flex items-center justify-center p-[10px] ">
-                                {item.image ? (
-                                    <img src={item.image} className="w-full h-full object-contain" alt={item.name} />
-                                ) : (
-                                    <div className="w-full h-full aspect-[4/3] bg-gradient-to-bl from-slate-200 via-blue-200 to-indigo-200" />
-                                )}
-                            </div>
-                            <div className="flex flex-col p-[10px] mt-auto">
-                                <h3 className="text-sm font-medium text-gray-700 truncate ">{item.name}</h3>
-                                <span className='text-xs text-[gray] mb-[10px]'>{item.brand}</span>
-                                <span className="text-base font-bold text-gray-900">NT${item.price.toLocaleString()}</span>
-                            </div>
-                        </div>
-                    )
-                    )
-                }
+                <ComputerCard data={currentItems} setIsOpen={setIsOpen} setComputerData={setComputerData}/>
             </div>
-
 
             {/* 頁面選擇 */}
             <div className='mt-auto ml-auto pr-[20px] pt-[20px]'>
@@ -93,7 +83,7 @@ export default function Computer() {
             </div>
 
             {/* 彈窗 */}
-            <ComputerDialog isOpen={isOpen} setIsOpen={setIsOpen} computerData={computerData} />
+            <ComputerDialog isOpen={isOpen} setIsOpen={setIsOpen} computerData={computerData} onDelete={onDelete} />
         </div>
     )
 }

@@ -1,11 +1,11 @@
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogFooter, DialogClose } from "@/components/ui/dialog"
-import { Button } from "@/components/ui/button"
 import { useState, useEffect } from 'react'
 import { useDispatch } from 'react-redux'
-import { addComputer, updateComputer, deleteCompunter } from '../../../store/modules/productStore.jsx'
+import { addComputer, updateComputer } from '../../../store/modules/productStore.jsx'
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogFooter, DialogClose } from "@/components/ui/dialog"
+import { Button } from "@/components/ui/button"
 import { toast } from "sonner"
 
-export function ComputerDialog({ isOpen, setIsOpen, computerData }) {
+export function ComputerDialog({ isOpen, setIsOpen, computerData, onDelete }) {
     const [form, setForm] = useState(
         {
             id: '',
@@ -16,7 +16,6 @@ export function ComputerDialog({ isOpen, setIsOpen, computerData }) {
         }
     )
     const dispatch = useDispatch()
-
 
     useEffect(() => {
         if (computerData?.type === 'edit' && computerData.data) {
@@ -36,18 +35,6 @@ export function ComputerDialog({ isOpen, setIsOpen, computerData }) {
             toast.success('修改成功')
         }
         setIsOpen(false);
-    };
-
-    const onDelete = (id) => {
-        const isConfirmed = window.confirm("確定要刪除嗎？");
-        if (isConfirmed) {
-            dispatch(deleteCompunter(id));
-            toast.success('刪除成功');
-            setIsOpen(false);
-            if (currentItems.length === 1 && currentPage > 1) {
-                setCurrentPage(currentPage - 1)
-            }
-        }
     };
 
     const onInputChange = (e) => {

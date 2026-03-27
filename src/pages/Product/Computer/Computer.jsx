@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { deleteCompunter } from '../../../store/modules/productStore.jsx'
-import { SquarePlus } from 'lucide-react';
+import { SquarePlus, Search } from 'lucide-react';
 import { toast } from "sonner"
 import AppPagination from '../../../components/common/AppPagination.jsx'
 import ComputerDialog from './ComputerDialog.jsx'
@@ -15,10 +15,28 @@ export async function loader({ request, params }) {
 export default function Computer() {
     const [isOpen, setIsOpen] = useState(false)  //彈窗開關
     const [computerData, setComputerData] = useState({ type: null, data: {} })  //選中的卡片資料
+    const [search, setSearch] = useState({ state: false, key: '' })
     const { computers } = useSelector((state) => state.product)
     const dispatch = useDispatch()
 
-    // 分頁邏輯開始
+    //設置查詢
+    const onSearch = (item) => {
+        if (item === '') {
+            setSearch({ state: false, key: '' })
+        } else {
+            setSearch({ state: true, key: item })
+        }
+    }
+    const filteredList = computers.filter(item => {
+        if (!search.state) return true;
+        const key = search.key.toLowerCase();
+        return (
+            item.name?.toLowerCase().includes(key) ||
+            item.brand?.toLowerCase().includes(key)
+        );
+    });
+
+    // RWD分頁邏輯
     const [currentPage, setCurrentPage] = useState(1); //當前頁數
     const [itemsPerPage, setItemsPerPage] = useState(10); //每頁顯示卡片數，RWD
     const [gridCols, setGridCols] = useState('grid-cols-5'); //每頁顯示列數(grid)，RWD
@@ -46,12 +64,12 @@ export default function Computer() {
         return () => window.removeEventListener('resize', handleResize);
     }, []);
 
-    const totalPages = Math.ceil(computers.length / itemsPerPage);
+    const totalPages = Math.ceil(filteredList.length / itemsPerPage);
     const indexOfLastItem = currentPage * itemsPerPage; // 目前最後一筆 
     const indexOfFirstItem = indexOfLastItem - itemsPerPage; // 目前第一筆
-    const currentItems = computers.slice(indexOfFirstItem, indexOfLastItem);
-    // 分頁邏輯結束
+    const currentItems = filteredList.slice(indexOfFirstItem, indexOfLastItem);
 
+    //設置刪除
     const onDelete = (id) => {
         const isConfirmed = window.confirm("確定要刪除嗎？");
         if (isConfirmed) {
@@ -66,15 +84,29 @@ export default function Computer() {
 
     return (
         <div className='computer flex flex-col'>
-            {/* 新增商品 */}
-            <div className='flex self-end mr-[20px] mb-[20px] cursor-pointer' onClick={() => { setIsOpen(true); setComputerData({ type: 'add', data: {} }) }}>
-                <SquarePlus className='h-[26px] w-[26px] text-[#1DA57A]' />
-                <span className='text-[18px] text-[#1DA57A] ml-[9px]' >新增商品 </span>
+            <div className='flex justify-between items-center mb-[10px]'>
+                {/* 查詢商品 */}
+                <div className="relative flex items-center w-full max-w-sm">
+                    <input
+                        type="text"
+                        onChange={(e) => onSearch(e.target.value)}
+                        placeholder="請輸入關鍵字(廠牌,型號)"
+                        className="h-10 w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-[#1DA57A] focus:border-transparent pr-12 transition-all"
+                    />
+                    <div className="absolute inset-y-0 right-0 flex items-center pr-3 pl-2 border-l border-gray-300 my-2 cursor-pointer hover:text-blue-600 group" >
+                        <Search className="h-4 w-4 text-gray-400 group-hover:text-[#1DA57A] transition-colors" />
+                    </div>
+                </div>
+                {/* 新增商品 */}
+                <div className='flex self-end cursor-pointer' onClick={() => { setIsOpen(true); setComputerData({ type: 'add', data: {} }) }}>
+                    <SquarePlus className='h-[26px] w-[26px] text-[#1DA57A]' />
+                    <span className='text-[18px] text-[#1DA57A] ml-[9px]' >新增商品 </span>
+                </div>
             </div>
 
             {/* 卡片 */}
             <div className={`grid gap-[20px] w-full min-h-0 ${gridCols}`} >
-                <ComputerCard data={currentItems} setIsOpen={setIsOpen} setComputerData={setComputerData}/>
+                <ComputerCard data={currentItems} setIsOpen={setIsOpen} setComputerData={setComputerData} />
             </div>
 
             {/* 頁面選擇 */}

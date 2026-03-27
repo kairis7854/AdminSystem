@@ -5,7 +5,7 @@ import './nav.scss'
 
 
 export default function Nav() {
-  const [productShow, setProductShow] = useState(true)
+  const [productShow, setProductShow] = useState(false)
   const navigate = useNavigate()
 
   return (

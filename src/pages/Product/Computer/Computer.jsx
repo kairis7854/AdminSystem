@@ -33,11 +33,11 @@ export default function Computer() {
                 setItemsPerPage(6);
                 setGridCols('grid-cols-3');
             } else if (width < 1200) {
+                setItemsPerPage(8);
+                setGridCols('grid-cols-4');
+            } else {
                 setItemsPerPage(10);
                 setGridCols('grid-cols-5');
-            } else {
-                setItemsPerPage(12);
-                setGridCols('grid-cols-6');
             }
             setCurrentPage(1);
         };
@@ -65,15 +65,15 @@ export default function Computer() {
     };
 
     return (
-        <div className='computer flex flex-col flex-1 min-w-0'>
+        <div className='computer flex flex-col'>
             {/* 新增商品 */}
-            <div className='flex  self-end pr-[20px] pb-[20px] cursor-pointer' onClick={() => { setIsOpen(true); setComputerData({ type: 'add', data: {} }) }}>
+            <div className='flex self-end mr-[20px] mb-[20px] cursor-pointer' onClick={() => { setIsOpen(true); setComputerData({ type: 'add', data: {} }) }}>
                 <SquarePlus className='h-[26px] w-[26px] text-[#1DA57A]' />
                 <span className='text-[18px] text-[#1DA57A] ml-[9px]' >新增商品 </span>
             </div>
 
             {/* 卡片 */}
-            <div className={`grid gap-[20px] items-stretch w-full ${gridCols}`} >
+            <div className={`grid gap-[20px] w-full min-h-0 ${gridCols}`} >
                 <ComputerCard data={currentItems} setIsOpen={setIsOpen} setComputerData={setComputerData}/>
             </div>
 

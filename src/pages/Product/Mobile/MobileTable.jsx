@@ -6,10 +6,10 @@ export default function ({ data, changeSell, setIsOpen, setMobileData, onDelete 
 
 
     return (
-        <Table>
+        <Table className="table-fixed ">
             <TableHeader>
                 <TableRow>
-                    <TableHead className="w-[100px]">廠牌</TableHead>
+                    <TableHead className="max-w-[150px]">廠牌</TableHead>
                     <TableHead>型號</TableHead>
                     <TableHead>規格</TableHead>
                     <TableHead>建議售價</TableHead>
@@ -20,10 +20,10 @@ export default function ({ data, changeSell, setIsOpen, setMobileData, onDelete 
             <TableBody>
                 {data.map((item) => (
                     <TableRow key={item.id}>
-                        <TableCell className="font-medium">{item.brand}</TableCell>
-                        <TableCell>{item.model}</TableCell>
-                        <TableCell>{item.spec}</TableCell>
-                        <TableCell>${item.price}</TableCell>
+                        <TableCell className="truncate font-medium">{item.brand}</TableCell>
+                        <TableCell className="truncate">{item.model}</TableCell>
+                        <TableCell className="truncate">{item.spec}</TableCell>
+                        <TableCell className="truncate">${item.price}</TableCell>
                         <TableCell>
                             {
                                 item.onSell === true ?

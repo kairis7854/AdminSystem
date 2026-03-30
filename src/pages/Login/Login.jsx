@@ -10,8 +10,9 @@ export default function Login() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { loading, error } = useSelector((state) => state.user);
-  
+
   useEffect(() => {
+    //有後端時，使用 HttpOnly Cookie 存儲 Token，防止 XSS 攻擊
     const token = localStorage.getItem('token')
     if (token) {
       navigate('/dashboard')

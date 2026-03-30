@@ -39,7 +39,7 @@ export default function Computer() {
     const [itemsPerPage, setItemsPerPage] = useState(10); //每頁顯示卡片數，RWD
     const [gridCols, setGridCols] = useState('grid-cols-5'); //每頁顯示列數(grid)，RWD
 
-    useEffect(() => {
+    useEffect(() => { //響應式 grid
         const handleResize = () => {
             const width = window.innerWidth;
             if (width < 768) {
@@ -62,7 +62,7 @@ export default function Computer() {
         return () => window.removeEventListener('resize', handleResize);
     }, []);
 
-    useEffect(() => {
+    useEffect(() => { //分頁邏輯
         const filteredComputers = searchData
             ? computers.filter(item =>
                 item.name?.toLowerCase().includes(searchData) ||
@@ -70,12 +70,12 @@ export default function Computer() {
             )
             : computers;
         const total = Math.ceil(filteredComputers.length / itemsPerPage) || 1;
-        setTotalPages(total);
+        setTotalPages(total);//總頁數
 
         const indexOfLastItem = currentPage * itemsPerPage; // 目前最後一筆 
         const indexOfFirstItem = indexOfLastItem - itemsPerPage; // 目前第一筆
         const currentItems = filteredComputers.slice(indexOfFirstItem, indexOfLastItem);
-        setCardList(currentItems)
+        setCardList(currentItems)//當前頁面卡片資料
     }, [currentPage, computers, searchData, itemsPerPage])
 
 

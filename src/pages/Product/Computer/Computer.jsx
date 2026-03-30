@@ -13,31 +13,29 @@ export async function loader({ request, params }) {
 }
 
 export default function Computer() {
-    const [isOpen, setIsOpen] = useState(false)  //彈窗開關
-    const [computerData, setComputerData] = useState({ type: null, data: {} })  //選中的卡片資料
-    const [search, setSearch] = useState({ state: false, key: '' })
-    const { computers } = useSelector((state) => state.product)
     const dispatch = useDispatch()
+    const { computers } = useSelector((state) => state.product)
+    const [isOpen, setIsOpen] = useState(false)  //彈窗開關
+    const [computerData, setComputerData] = useState({ type: null, data: {} })  //彈窗資料
+
+    const [currentPage, setCurrentPage] = useState(1); //分頁，當前頁數
+    const [totalPages, setTotalPages] = useState(1);   //分頁，總頁數
+
+    const [searchData, setSearchData] = useState(null) //收尋資料
+    const [cardList, setCardList] = useState(computers) //卡片資料
 
     //設置查詢
     const onSearch = (item) => {
         if (item === '') {
-            setSearch({ state: false, key: '' })
+            setSearchData(null)
         } else {
-            setSearch({ state: true, key: item })
+            setSearchData(item.toLowerCase());
         }
+        setCurrentPage(1)
     }
-    const filteredList = computers.filter(item => {
-        if (!search.state) return true;
-        const key = search.key.toLowerCase();
-        return (
-            item.name?.toLowerCase().includes(key) ||
-            item.brand?.toLowerCase().includes(key)
-        );
-    });
+
 
     // RWD分頁邏輯
-    const [currentPage, setCurrentPage] = useState(1); //當前頁數
     const [itemsPerPage, setItemsPerPage] = useState(10); //每頁顯示卡片數，RWD
     const [gridCols, setGridCols] = useState('grid-cols-5'); //每頁顯示列數(grid)，RWD
 
@@ -64,10 +62,22 @@ export default function Computer() {
         return () => window.removeEventListener('resize', handleResize);
     }, []);
 
-    const totalPages = Math.ceil(filteredList.length / itemsPerPage);
-    const indexOfLastItem = currentPage * itemsPerPage; // 目前最後一筆 
-    const indexOfFirstItem = indexOfLastItem - itemsPerPage; // 目前第一筆
-    const currentItems = filteredList.slice(indexOfFirstItem, indexOfLastItem);
+    useEffect(() => {
+        const filteredComputers = searchData
+            ? computers.filter(item =>
+                item.name?.toLowerCase().includes(searchData) ||
+                item.brand?.toLowerCase().includes(searchData)
+            )
+            : computers;
+        const total = Math.ceil(filteredComputers.length / itemsPerPage) || 1;
+        setTotalPages(total);
+
+        const indexOfLastItem = currentPage * itemsPerPage; // 目前最後一筆 
+        const indexOfFirstItem = indexOfLastItem - itemsPerPage; // 目前第一筆
+        const currentItems = filteredComputers.slice(indexOfFirstItem, indexOfLastItem);
+        setCardList(currentItems)
+    }, [currentPage, computers, searchData, itemsPerPage])
+
 
     //設置刪除
     const onDelete = (id) => {
@@ -76,8 +86,8 @@ export default function Computer() {
             dispatch(deleteCompunter(id));
             toast.success('刪除成功');
             setIsOpen(false);
-            if (currentItems.length === 1 && currentPage > 1) {
-                setCurrentPage(currentPage - 1)
+            if (cardList.length === 1 && currentPage > 1) {
+                setCurrentPage(prev => prev - 1)
             }
         }
     };
@@ -105,12 +115,12 @@ export default function Computer() {
             </div>
 
             {/* 卡片 */}
-            <div className={`grid gap-[20px] w-full min-h-0 ${gridCols}`} >
-                <ComputerCard data={currentItems} setIsOpen={setIsOpen} setComputerData={setComputerData} />
+            <div className={`grid gap-[20px] w-full min-h-0 ${gridCols}  mb-[20px]`  } >
+                <ComputerCard data={cardList} setIsOpen={setIsOpen} setComputerData={setComputerData} />
             </div>
 
             {/* 頁面選擇 */}
-            <div className='mt-auto ml-auto pr-[20px] pt-[20px]'>
+            <div className='mt-auto ml-auto pr-[20px] '>
                 <AppPagination currentPage={currentPage} setCurrentPage={setCurrentPage} totalPages={totalPages} />
             </div>
 

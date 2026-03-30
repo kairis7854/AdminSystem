@@ -2,7 +2,7 @@ import React from 'react'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 
 
-export default function ({ data, changeSell, setIsOpen, setMobileData, onDelete }) {
+export default function ({ data, changeSell, setIsOpen, setDialogData, onDelete }) {
 
 
     return (
@@ -43,7 +43,7 @@ export default function ({ data, changeSell, setIsOpen, setMobileData, onDelete 
                                     className='mr-5'
                                     onClick={() => {
                                         setIsOpen(true);
-                                        setMobileData({ type: 'edit', data: item })
+                                        setDialogData({ type: 'edit', data: item })
                                     }}
                                 >修改</div>
                                 <div onClick={() => { onDelete(item.id) }}>刪除</div>

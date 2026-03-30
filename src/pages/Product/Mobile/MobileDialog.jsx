@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux'
 import { addMobile, updateMobile } from '../../../store/modules/productStore.jsx'
 import { toast } from "sonner"
 
-export function MobileDialog({ isOpen, setIsOpen, mobileData }) {
+export function MobileDialog({ isOpen, setIsOpen, dialogData }) {
     const [form, setForm] = useState(
         {
             id: "",
@@ -18,19 +18,19 @@ export function MobileDialog({ isOpen, setIsOpen, mobileData }) {
     )
     const dispatch = useDispatch()
     useEffect(() => {
-        if (mobileData?.type === 'edit' && mobileData.data) {
-            setForm(mobileData.data);
-        } else if (mobileData?.type === 'add') {
+        if (dialogData?.type === 'edit' && dialogData.data) {
+            setForm(dialogData.data);
+        } else if (dialogData?.type === 'add') {
             setForm({ brand: "", model: "", spec: "", price: "", onSell: true });
         }
-    }, [mobileData]);
+    }, [dialogData]);
 
     const onSave = (e) => {
         e.preventDefault()
-        if (mobileData.type === 'add') {
+        if (dialogData.type === 'add') {
             dispatch(addMobile({ ...form, id: crypto.randomUUID() }));
             toast.success('新增成功')
-        } else if (mobileData.type === 'edit') {
+        } else if (dialogData.type === 'edit') {
             dispatch(updateMobile(form));
             toast.success('修改成功')
         }
@@ -49,10 +49,10 @@ export function MobileDialog({ isOpen, setIsOpen, mobileData }) {
         <Dialog open={isOpen} onOpenChange={setIsOpen}>
             <DialogContent>
                 <DialogHeader className="mb-[20px]">
-                    <DialogTitle className="text-[18px]">{mobileData?.type === 'add' ? '新增' : '編輯'}商品</DialogTitle>
+                    <DialogTitle className="text-[18px]">{dialogData?.type === 'add' ? '新增' : '編輯'}商品</DialogTitle>
                 </DialogHeader>
                 <DialogDescription className="sr-only">
-                    {mobileData?.type === 'add' ? '新增商品資訊表單' : '編輯商品資訊表單'}
+                    {dialogData?.type === 'add' ? '新增商品資訊表單' : '編輯商品資訊表單'}
                 </DialogDescription>
                 <form className="p-[20px]" onSubmit={onSave} autoComplete="off">
                     <div className="flex items-center  mb-[10px]">

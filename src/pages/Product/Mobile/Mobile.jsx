@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { updateMobile, deleteMobile } from '../../../store/modules/productStore.jsx'
 import { SquarePlus, Search } from 'lucide-react';
@@ -14,37 +14,43 @@ export async function loader({ request, params }) {
 }
 
 export default function Mobile() {
-    const [isOpen, setIsOpen] = useState(false)  //彈窗開關
-    const [mobileData, setMobileData] = useState({ type: null, data: {} })  //表單資料
-    const [search, setSearch] = useState({ state: false, key: '' })
-    const { mobiles } = useSelector((state) => state.product);
     const dispatch = useDispatch()
+    const { mobiles } = useSelector((state) => state.product);
+    const [isOpen, setIsOpen] = useState(false)  //彈窗開關
+    const [dialogData, setDialogData] = useState({ type: null, data: {} })  //彈窗資料
+    const [currentPage, setCurrentPage] = useState(1); // 分頁，當前頁碼
+    const [totalPages, setTotalPages] = useState(1);   // 分頁，總頁數
+    const [searchData, setSearchData] = useState(null) //搜尋資料
+    const [table, setTable] = useState(mobiles) //列表資料
 
     //設置查詢
     const onSearch = (item) => {
-        if (item === '') {
-            setSearch({ state: false, key: '' })
+        if (item === null) {
+            setSearchData(null)
         } else {
-            setSearch({ state: true, key: item })
+            setSearchData(item.toLowerCase());
         }
+        setCurrentPage(1)
     }
-    const filteredList = mobiles.filter(item => {
-        if (!search.state) return true;
-        const key = search.key.toLowerCase();
-        return (
-            item.brand?.toLowerCase().includes(key) ||
-            item.model?.toLowerCase().includes(key)
-        );
-    });
 
     //分頁邏輯
-    const [currentPage, setCurrentPage] = useState(1); //當前頁數
-    const itemsPerPage = 6; //每頁顯示筆數
-    const totalPages = Math.ceil(filteredList.length / itemsPerPage);
-    const indexOfLastItem = currentPage * itemsPerPage; // 目前最後一筆 
-    const indexOfFirstItem = indexOfLastItem - itemsPerPage; // 目前第一筆
-    const currentItems = filteredList.slice(indexOfFirstItem, indexOfLastItem);
+    useEffect(() => {
+        const itemsPerPage = 6; //每頁顯示筆數
+        const filteredMobiles = searchData
+            ? mobiles.filter(item =>
+                item.brand?.toLowerCase().includes(searchData) ||
+                item.model?.toLowerCase().includes(searchData)
+            )
+            : mobiles;
+        const total = Math.ceil(filteredMobiles.length / itemsPerPage) || 1;
+        setTotalPages(total);
 
+        const indexOfLastItem = currentPage * itemsPerPage; // 目前最後一筆 
+        const indexOfFirstItem = indexOfLastItem - itemsPerPage; // 目前第一筆
+        const currentItems = filteredMobiles.slice(indexOfFirstItem, indexOfLastItem);
+        setTable(currentItems)
+        
+    }, [currentPage, mobiles, searchData])
 
     //商品上架
     const changeSell = (item) => {
@@ -60,8 +66,8 @@ export default function Mobile() {
             dispatch(deleteMobile(id));
             toast.success('刪除成功');
 
-            if (currentItems.length === 1 && currentPage > 1) {
-                setCurrentPage(currentPage - 1)
+            if (table.length === 1 && currentPage > 1) {
+                setCurrentPage(1)
             }
         }
     }
@@ -82,24 +88,24 @@ export default function Mobile() {
                     </div>
                 </div>
                 {/* 新增商品 */}
-                <div className='flex  self-end pr-[20px] pb-[20px] cursor-pointer'>
+                <div className='flex  self-end pr-[20px] pb-[20px] cursor-pointer' onClick={() => { setIsOpen(true); setDialogData({ type: 'add', data: {} }) }}>
                     <SquarePlus className='h-[26px] w-[26px] text-[#1DA57A]' />
-                    <span className='text-[18px] text-[#1DA57A] ml-[9px]' onClick={() => { setIsOpen(true); setMobileData({ type: 'add', data: {} }) }}>新增商品 </span>
+                    <span className='text-[18px] text-[#1DA57A] ml-[9px]' >新增商品 </span>
                 </div>
             </div>
 
             {/* 列表 */}
             <div className='mb-[20px]'>
-                <MobileTable data={currentItems} changeSell={changeSell} setIsOpen={setIsOpen} setMobileData={setMobileData} onDelete={onDelete} />
+                <MobileTable data={table} changeSell={changeSell} setIsOpen={setIsOpen} setDialogData={setDialogData} onDelete={onDelete} />
             </div>
 
             {/* 頁面選擇 */}
-            <div className='self-end pr-[20px]'>
+            <div className='mt-auto ml-auto pr-[20px]'>
                 <AppPagination currentPage={currentPage} setCurrentPage={setCurrentPage} totalPages={totalPages} />
             </div>
 
             {/* 彈窗 */}
-            <MobileDialog isOpen={isOpen} setIsOpen={setIsOpen} mobileData={mobileData} />
+            <MobileDialog isOpen={isOpen} setIsOpen={setIsOpen} dialogData={dialogData} />
         </div>
     )
 }

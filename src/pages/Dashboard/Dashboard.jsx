@@ -1,6 +1,4 @@
 import React from 'react'
-import DashboardCard from './DashboardCard.jsx';
-import dashboardCard_menu from '../../config/dashboardCard_menu.js';
 import './dashboard.scss'
 
 export async function loader({ request, params }) {

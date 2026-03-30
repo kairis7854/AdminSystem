@@ -31,7 +31,7 @@
                 padding: 10px 15px;
                 cursor: pointer;
 
-                &:hover {
+                &:hover, &.active {
                     color: white;
                     background-color: #1da57a;
                 }
